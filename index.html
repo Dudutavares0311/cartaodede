@@ -5,14 +5,15 @@
   <title>Cartão para minha Dedê ❤️</title>
   <style>
     body {
-      background-color: #000;
-      color: #00ff00;
+      background-color: #ffe4e1;
+      color: #171a4a;
       font-family: "Courier New", Courier, monospace;
       padding: 20px;
       white-space: pre-wrap;
     }
     #terminal {
       min-height: 400px;
+      white-space: pre-wrap;
     }
     .blink {
       animation: blink 1s step-start 0s infinite;
@@ -38,12 +39,18 @@
 <body>
   <div id="terminal"></div>
   <span class="blink">█</span>
+  <br />
   <button id="repeatBtn" onclick="startTyping()">Repetir mensagem</button>
+
+  <audio id="typingSound" src="https://cdn.freesound.org/previews/693/693586_3975583-lq.mp3" loop></audio>
+  <audio id="buttonSound" src="https://cdn.freesound.org/previews/399/399097_4197299-lq.mp3"></audio>
 
   <script>
     const terminal = document.getElementById("terminal");
     const repeatBtn = document.getElementById("repeatBtn");
     const cursor = document.querySelector(".blink");
+    const typingSound = document.getElementById("typingSound");
+    const buttonSound = document.getElementById("buttonSound");
 
     const message = `
 Iniciando conexão...
@@ -130,16 +137,25 @@ _
 `;
 
     let i = 0;
+    let typingInterval;
 
     function startTyping() {
+      buttonSound.currentTime = 0;
+      buttonSound.play();
+
       terminal.textContent = "Carregando.......\n";
       repeatBtn.style.display = "none";
       i = 0;
 
+      // Stop any typing sound currently playing and reset
+      typingSound.pause();
+      typingSound.currentTime = 0;
+
       setTimeout(() => {
         terminal.textContent = "";
+        typingSound.play();
         typeNextChar();
-      }, 1500); // tempo do loading inicial
+      }, 1500);
     }
 
     function typeNextChar() {
@@ -148,12 +164,13 @@ _
         i++;
         setTimeout(typeNextChar, 15);
       } else {
+        typingSound.pause();
         repeatBtn.style.display = "inline-block";
       }
     }
 
-    // inicia automaticamente
-    startTyping();
+    // Inicia automaticamente ao carregar a página
+    window.onload = startTyping;
   </script>
 </body>
 </html>
