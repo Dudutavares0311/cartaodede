@@ -22,6 +22,7 @@
         opacity: 0;
       }
     }
+    #startBtn,
     #repeatBtn {
       margin-top: 20px;
       padding: 10px 20px;
@@ -31,6 +32,8 @@
       font-family: "Courier New", Courier, monospace;
       font-weight: bold;
       cursor: pointer;
+    }
+    #repeatBtn {
       display: none;
     }
   </style>
@@ -38,14 +41,15 @@
 <body>
   <div id="terminal"></div>
   <span class="blink">█</span>
+  <button id="startBtn" onclick="startTyping()">Começar</button>
   <button id="repeatBtn" onclick="startTyping()">Repetir mensagem</button>
 
-  <!-- NOVO SOM ADICIONADO AQUI -->
   <audio id="beep" src="https://cdn.freesound.org/previews/399/399097_4197299-lq.mp3" preload="auto"></audio>
 
   <script>
     const terminal = document.getElementById("terminal");
     const beep = document.getElementById("beep");
+    const startBtn = document.getElementById("startBtn");
     const repeatBtn = document.getElementById("repeatBtn");
     const cursor = document.querySelector(".blink");
 
@@ -94,11 +98,27 @@ Por enquanto, te ofereço meu amor verdadeiro, minha companhia e minha luta diá
 ⠀⢻⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠹⣷⡀⠄⠀⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠂⠀⡀⢻⡄⢸⡏⠀
 ⠀⠀⢷⡀⠀⠀⠀⠀⠀⠀⠀⠀⢦⡀⠀⣷⠻⡆⠀⠀⠀⠀⣿⡿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠐⣸⣿⣸⣷⣾⠇⠀
 ⠀⠀⠈⢳⡄⠀⠀⠀⠀⠀⠀⠀⠀⢻⣄⣹⣆⠁⠀⠀⠀⠁⣿⠁⢹⡀⠀⠀⠀⠀⠀⣀⣀⣀⣴⠏⢻⣿⠃⢸⣿⠆⠀
-⠀⠀⠀⠀⠹⣆⠀⠀⠀⠀⠀⠀⠀⠀⣷⡀⠉⠙⣷⣀⠀⠀⢹⡀⠸⡇⠀⠀⠀⠀⠀⣿⠈⣿⡀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠘⣧⠀⠀⠀⠀⠀⠀⠀⠀⠻⠦⠦⠼⢧⣤⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⡉⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢸⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠓⠦⣤⣤⣀⣀⣀⣠⣤⣤⠤⠶⠛⠋⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢹⢷⡀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣏⣰⣿⠇⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⡟⠀⠉⠁⠀⠘⠓⢶⡶⠦⠤⣄⣀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⢿⡉⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠈⠻⣄⠀⠀⠀⠀⠀⠀⠀⠀⣷⡀⠉⠙⣷⣀⠀⠀⢹⡀⠸⡇⠀⠀⠀⠀⠀⠉⠉⠉⠁⠀⠆⢻⡀⠈⢷⡀⠀
+⠀⠀⠀⠀⠀⠹⣆⠀⠀⠀⠀⠀⠀⠀⠈⢻⡄⠀⠈⢹⡏⠙⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣂⣾⠁⠀⠾⠿⠀
+⠀⠀⠀⠀⠀⠀⠘⣧⠀⠀⠀⠀⠀⠀⠀⠀⠻⠦⠦⠼⢧⣤⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠋⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢸⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠓⠦⣤⣤⣀⣀⣀⣠⣤⣤⠤⢶⠛⠋⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢹⢷⡀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠁⠀⣿⠈⣿⡀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⡟⠀⠉⠁⠀⠘⠓⢶⡶⠦⠤⣄⣀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⢰⣏⣰⣿⠇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣼⠁⠀⠀⠀⠀⠀⣠⡟⠀⠀⡀⠀⠀⠈⠉⠉⠉⠉⠉⠐⠒⠒⠒⠋⢿⡉⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣰⠋⠀⠀⠀⠀⠀⢠⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⢻⡆⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⡿⣄⣀⡀⠀⠀⢠⡏⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣆⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⡇⠀⠉⠉⠉⣳⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣆⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⡇⠀⠀⣠⠞⠁⠀⠀⠀⡀⠀⠀⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣦⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⡇⢀⡴⠃⣴⠆⠀⢀⣼⠃⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡀⠀⠘⣧⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣠⣷⠋⢀⠞⠁⠀⢠⡾⠁⠀⠀⠀⢸⡿⠀⠀⢐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢷⡀⠀⠘⣇⠀⠀⠀
+⠀⠀⠀⠀⠀⠋⢻⣴⠏⠀⠀⠀⣼⠃⠀⠀⠀⢀⡾⠁⠀⠀⠄⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⠀⠀⢹⡆⠀⠀
+⠀⠀⠀⠀⠀⠀⢺⣅⠀⠀⠀⡼⠃⠀⠀⠀⠀⡼⠁⠀⠀⠀⡅⣸⠇⠀⠀⠀⠀⠀⣴⡄⠀⠀⠄⠀⠈⣧⠀⠀⢳⡀⠀
+⠀⠀⠀⠀⠀⠀⢸⡏⠛⢦⣼⠃⠀⠀⠀⠀⣴⠇⠀⠀⠀⠀⣇⡿⠀⠀⠀⠀⠀⠀⢼⡀⠀⠂⠀⠀⠀⠸⣄⣠⠞⠃⠀
+⠀⠀⠀⠀⠀⠀⢀⣇⠀⠀⠈⠉⠙⢳⠶⢶⣏⠀⠀⠀⠀⠀⣼⠁⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⣀⣴⠏⠁⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠈⣿⠀⠀⠀⠀⠀⠸⣆⠀⠈⠙⢦⣀⣀⣀⣟⣀⣀⠀⠀⠀⠀⠀⢀⣧⣠⠤⣶⠟⠉⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢻⠂⠀⠀⠀⠀⠀⢻⡀⠀⠀⠀⠀⠀⠀⠀⠈⡟⢿⠛⠛⠛⠉⠉⠑⠀⠀⣽⡆⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠸⡄⠀⠀⠀⠀⠀⠀⣧⠀⠀⠀⠀⠀⠀⠀⠀⡇⠸⡇⠀⠀⠀⠀⠀⠀⠀⢿⡁⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⢸⣆⠀⠀⠀⠀⠀⠀⠀⣧⠀⢳⡄⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀
 
 Amor detectado com sucesso.
 
@@ -121,6 +141,7 @@ _
 
     function startTyping() {
       terminal.textContent = "Carregando.......\n";
+      startBtn.style.display = "none";
       repeatBtn.style.display = "none";
       i = 0;
 
@@ -134,7 +155,6 @@ _
       if (i < message.length) {
         terminal.textContent += message.charAt(i);
 
-        // Reproduz som a cada letra
         const beepClone = beep.cloneNode();
         beepClone.play();
 
@@ -144,8 +164,6 @@ _
         repeatBtn.style.display = "inline-block";
       }
     }
-
-    startTyping();
   </script>
 </body>
 </html>
