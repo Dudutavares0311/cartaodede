@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cartão para Dedê 💚</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: "Courier New", Courier, monospace;
+      padding: 20px;
+      white-space: pre-wrap;
+    }
+    #terminal {
+      min-height: 400px;
+    }
+    .blink {
+      animation: blink 1s step-start 0s infinite;
+    }
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+    #repeatBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #00ff00;
+      border: none;
+      color: #000;
+      font-family: "Courier New", Courier, monospace;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal"></div>
+  <span class="blink">█</span>
+  <button id="repeatBtn" onclick="startTyping()">Repetir mensagem</button>
+
+  <audio id="beep" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+
+  <script>
+    const terminal = document.getElementById("terminal");
+    const beep = document.getElementById("beep");
+    const repeatBtn = document.getElementById("repeatBtn");
+    const cursor = document.querySelector(".blink");
+
+    const message = `
+Iniciando conexão...
+Estabelecendo vínculo emocional...
+Conexão com a princesinha (Dedê) bem-sucedida! 💚
+
+Transmitindo dados românticos...
+
+           ******       ******
+         **********   **********
+       ************* *************
+      *******************************
+     *********************************
+     *********************************
+     *********************************
+      *******************************
+        ***************************
+          ***********************
+            *******************
+               *************
+                  *******
+                    ***
+                     *
+
+Coração detectado com sucesso.
+
+> status: APAIXONADO 💘
+> mensagem: Você é meu código favorito, Dedê.
+> nota: Obrigado por compilar minha felicidade todos os dias.
+
+Com amor,
+Dudu 💻❤️
+
+_ 
+| |  .-----.-----.-----.-----.
+| |  |  -__|     |  _  |  _  |
+|_|  |_____|__|__|_____|___  |
+                       |_____|
+`;
+
+    let i = 0;
+
+    function startTyping() {
+      terminal.textContent = "Carregando...\n";
+      repeatBtn.style.display = "none";
+      i = 0;
+
+      setTimeout(() => {
+        terminal.textContent = "";
+        typeNextChar();
+      }, 1500); // tempo do loading inicial
+    }
+
+    function typeNextChar() {
+      if (i < message.length) {
+        terminal.textContent += message.charAt(i);
+        beep.currentTime = 0;
+        beep.play();
+        i++;
+        setTimeout(typeNextChar, 15);
+      } else {
+        repeatBtn.style.display = "inline-block";
+      }
+    }
+
+    // Inicia automaticamente ao abrir
+    startTyping();
+  </script>
+</body>
+</html>
