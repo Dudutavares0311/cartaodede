@@ -40,12 +40,8 @@
   <span class="blink">█</span>
   <button id="repeatBtn" onclick="startTyping()">Repetir mensagem</button>
 
-  <audio id="beep" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
-  <audio id="beep" src="https://cdn.pixabay.com/audio/2024/03/26/audio_5af6e560cf.mp3" preload="auto"></audio>
-
   <script>
     const terminal = document.getElementById("terminal");
-    const beep = document.getElementById("beep");
     const repeatBtn = document.getElementById("repeatBtn");
     const cursor = document.querySelector(".blink");
 
@@ -94,7 +90,7 @@ Por enquanto, te ofereço meu amor verdadeiro, minha companhia e minha luta diá
 ⠀⢻⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠹⣷⡀⠄⠀⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠂⠀⡀⢻⡄⢸⡏⠀
 ⠀⠀⢷⡀⠀⠀⠀⠀⠀⠀⠀⠀⢦⡀⠀⣷⠻⡆⠀⠀⠀⠀⣿⡿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠐⣸⣿⣸⣷⣾⠇⠀
 ⠀⠀⠈⢳⡄⠀⠀⠀⠀⠀⠀⠀⠀⢻⣄⣹⣆⠁⠀⠀⠀⠁⣿⠁⢹⡀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣸⣿⣿⣿⣿⣿⠀⠀
-⠀⠀⠀⠈⠻⣄⠀⠀⠀⠀⠀⠀⠀⠀⣷⡀⠉⠙⣷⣀⠀⠀⢹⡀⠸⡇⠀⠀⠀⠀⠀⣀⣀⣀⣴⠏⢻⣿⠃⢸⣿⠆⠀
+⠀⠀⠀⠈⠻⣄⠀⠀⠀⠀⠀⠀⠀⠀⣷⡀⠉⠙⢷⣀⠀⠀⢹⡀⠸⡇⠀⠀⠀⠀⠀⣀⣀⣀⣴⠏⢻⣿⠃⢸⣿⠆⠀
 ⠀⠀⠀⠀⠀⠹⣆⠀⠀⠀⠀⠀⠀⠀⠈⢻⡄⠀⠈⢹⡏⠙⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠀⠀⠆⢻⡀⠈⢷⡀⠀
 ⠀⠀⠀⠀⠀⠀⠘⣧⠀⠀⠀⠀⠀⠀⠀⠀⠻⠦⠦⠼⢧⣤⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣂⣾⠁⠀⠾⠿⠀
 ⠀⠀⠀⠀⠀⠀⠀⢸⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠓⠦⣤⣤⣀⣀⣀⣠⣤⣤⠤⢶⠛⠋⠀⠀⠀⠀⠀
@@ -130,7 +126,7 @@ _
 | |  .-----.-----.-----.-----.
 | |  |  -__|     |  _  |  _  |
 |_|  |_____|__|__|_____|___  |
-                       |_____|
+                       |_____|  
 `;
 
     let i = 0;
@@ -149,8 +145,6 @@ _
     function typeNextChar() {
       if (i < message.length) {
         terminal.textContent += message.charAt(i);
-        beep.currentTime = 0;
-        beep.play();
         i++;
         setTimeout(typeNextChar, 15);
       } else {
@@ -158,9 +152,8 @@ _
       }
     }
 
-    // Inicia automaticamente ao abrir
+    // inicia automaticamente
     startTyping();
   </script>
 </body>
-
 </html>
