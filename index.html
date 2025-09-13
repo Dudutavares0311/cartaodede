@@ -7,13 +7,12 @@
     body {
       background-color: #ffe4e1;
       color: #171a4a;
-      font-family: "Courier New", Courier, monospace;
+      font-family: "Courier bold", Courier, monospace;
       padding: 20px;
       white-space: pre-wrap;
     }
     #terminal {
       min-height: 400px;
-      white-space: pre-wrap;
     }
     .blink {
       animation: blink 1s step-start 0s infinite;
@@ -23,15 +22,17 @@
         opacity: 0;
       }
     }
-    #repeatBtn {
+    #startBtn, #repeatBtn {
       margin-top: 20px;
       padding: 10px 20px;
-      background-color: #00ff00;
+      background-color: #b0c2f2;
       border: none;
-      color: #000;
+      color: #ffe4e1;
       font-family: "Courier New", Courier, monospace;
       font-weight: bold;
       cursor: pointer;
+    }
+    #repeatBtn {
       display: none;
     }
   </style>
@@ -39,18 +40,21 @@
 <body>
   <div id="terminal"></div>
   <span class="blink">█</span>
-  <br />
-  <button id="repeatBtn" onclick="startTyping()">Repetir mensagem</button>
+  <button id="startBtn">Iniciar</button>
+  <button id="repeatBtn">Repetir mensagem</button>
 
-  <audio id="typingSound" src="https://cdn.freesound.org/previews/693/693586_3975583-lq.mp3" loop></audio>
-  <audio id="buttonSound" src="https://cdn.freesound.org/previews/399/399097_4197299-lq.mp3"></audio>
+  <!-- Som contínuo de teclado -->
+  <audio id="typingSound" src="https://cdn.freesound.org/previews/693/693586_3975583-lq.mp3" preload="auto" loop></audio>
+  <!-- Som do clique no botão -->
+  <audio id="clickSound" src="https://cdn.freesound.org/previews/399/399097_4197299-lq.mp3" preload="auto"></audio>
 
   <script>
     const terminal = document.getElementById("terminal");
+    const startBtn = document.getElementById("startBtn");
     const repeatBtn = document.getElementById("repeatBtn");
-    const cursor = document.querySelector(".blink");
     const typingSound = document.getElementById("typingSound");
-    const buttonSound = document.getElementById("buttonSound");
+    const clickSound = document.getElementById("clickSound");
+    const cursor = document.querySelector(".blink");
 
     const message = `
 Iniciando conexão...
@@ -97,8 +101,8 @@ Por enquanto, te ofereço meu amor verdadeiro, minha companhia e minha luta diá
 ⠀⢻⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠹⣷⡀⠄⠀⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠂⠀⡀⢻⡄⢸⡏⠀
 ⠀⠀⢷⡀⠀⠀⠀⠀⠀⠀⠀⠀⢦⡀⠀⣷⠻⡆⠀⠀⠀⠀⣿⡿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠐⣸⣿⣸⣷⣾⠇⠀
 ⠀⠀⠈⢳⡄⠀⠀⠀⠀⠀⠀⠀⠀⢻⣄⣹⣆⠁⠀⠀⠀⠁⣿⠁⢹⡀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣸⣿⣿⣿⣿⣿⠀⠀
-⠀⠀⠀⠈⠻⣄⠀⠀⠀⠀⠀⠀⠀⠀⣷⡀⠉⠙⢷⣀⠀⠀⢹⡀⠸⡇⠀⠀⠀⠀⠀⣀⣀⣀⣴⠏⢻⣿⠃⢸⣿⠆⠀
-⠀⠀⠀⠀⠀⠹⣆⠀⠀⠀⠀⠀⠀⠀⠈⢻⡄⠀⠈⢹⡏⠙⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠀⠀⠆⢻⡀⠈⢷⡀⠀
+⠀⠀⠀⠈⠻⣄⠀⠀⠀⠀⠀⠀⠀⠀⣷⡀⠉⠙⢦⣀⣀⣀⣟⣀⣀⠀⠀⠀⠀⠀⢀⣧⣠⠤⣶⠟⠉⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠹⣆⠀⠀⠀⠀⠀⠀⠀⠈⢻⡄⠀⠈⢹⡏⠙⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠀⠀⠆⢻⡀⠈⢷⡀⠀
 ⠀⠀⠀⠀⠀⠀⠘⣧⠀⠀⠀⠀⠀⠀⠀⠀⠻⠦⠦⠼⢧⣤⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣂⣾⠁⠀⠾⠿⠀
 ⠀⠀⠀⠀⠀⠀⠀⢸⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠓⠦⣤⣤⣀⣀⣀⣠⣤⣤⠤⢶⠛⠋⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⢹⢷⡀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠁⠀⣿⠈⣿⡀⠀⠀⠀⠀⠀⠀⠀
@@ -131,46 +135,56 @@ Dudu 💻❤️
 
 _ 
 | |  .-----.-----.-----.-----.
-| |  |  -__|     |  _  |  _  |
-|_|  |_____|__|__|_____|___  |
-                       |_____|  
+| |  |  -__|     |  _  |     |
+|_|  |_____|__|__|___  |__|__|
+                  |_____|
 `;
 
-    let i = 0;
+    let index = 0;
     let typingInterval;
 
-    function startTyping() {
-      buttonSound.currentTime = 0;
-      buttonSound.play();
-
-      terminal.textContent = "Carregando.......\n";
-      repeatBtn.style.display = "none";
-      i = 0;
-
-      // Stop any typing sound currently playing and reset
-      typingSound.pause();
-      typingSound.currentTime = 0;
-
-      setTimeout(() => {
-        terminal.textContent = "";
-        typingSound.play();
-        typeNextChar();
-      }, 1500);
-    }
-
-    function typeNextChar() {
-      if (i < message.length) {
-        terminal.textContent += message.charAt(i);
-        i++;
-        setTimeout(typeNextChar, 15);
+    function typeText() {
+      if (index < message.length) {
+        terminal.textContent += message.charAt(index);
+        index++;
       } else {
+        clearInterval(typingInterval);
         typingSound.pause();
+        typingSound.currentTime = 0;
         repeatBtn.style.display = "inline-block";
       }
     }
 
-    // Inicia automaticamente ao carregar a página
-    window.onload = startTyping;
+    function startTyping() {
+      startBtn.style.display = "none";
+      repeatBtn.style.display = "none";
+      terminal.textContent = "";
+      index = 0;
+      typingSound.play();
+      typingInterval = setInterval(typeText, 35);
+    }
+
+    function repeatMessage() {
+      clickSound.play();
+      startTyping();
+    }
+
+    // Botão iniciar começa a digitar e tocar som contínuo
+    startBtn.addEventListener("click", () => {
+      startTyping();
+    });
+
+    // Botão repetir mensagem
+    repeatBtn.addEventListener("click", () => {
+      repeatMessage();
+    });
+
+    // Inicialização: esconder repetir e mostrar iniciar
+    window.onload = () => {
+      terminal.textContent = "";
+      startBtn.style.display = "inline-block";
+      repeatBtn.style.display = "none";
+    };
   </script>
 </body>
 </html>
